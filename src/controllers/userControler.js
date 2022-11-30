@@ -26,7 +26,7 @@ async function getUser(req, res) {
   const { secret } = req.params;
   try {
     const [user] = await selectUser(secret);
-    res.json({ error: false, username: user.username });
+    res.json({ error: false, user });
   } catch (error) {
     res.status(404).json({ error: true, message: 'user not found' });
   }

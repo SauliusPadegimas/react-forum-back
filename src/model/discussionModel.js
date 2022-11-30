@@ -1,9 +1,10 @@
 const db = require('../utils/db');
 
-async function selectDiscussions(topicid) {
-  const sql = 'SELECT id, title, author FROM discussions WHERE topicId = ?';
+async function selectDiscussions(topicname) {
+  const sql =
+    "SELECT discussions.id, discussions.title, username, (SELECT posts.time FROM posts WHERE posts.discId = discussions.id AND posts.time >= ALL(SELECT posts.time FROM posts WHERE posts.discId = discussions.id)) AS 'lastPost' FROM discussions JOIN Users ON (Users.id = discussions.author) JOIN topics ON (discussions.topicId = topics.id) WHERE topics.title = ? GROUP BY discussions.id";
   // parsisiusti pilna postu info
-  const [rows] = await db.execute(sql, [topicid]);
+  const [rows] = await db.execute(sql, [topicname]);
   return rows;
 }
 

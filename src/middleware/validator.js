@@ -34,10 +34,13 @@ async function userValidator(secret) {
 
 // funkcija tikrina, ar nera tusciu duomenu lauku.
 // Naudojama su socket routais, todel grazina ne next(), o tiesiog Boolean.
-async function postValidator(newPost) {
-  const { title, photo, bids, date } = newPost;
-  if (!!title.trim() && !!photo.trim() && !!bids && !!date) {
-    return true;
+async function postValidator(postObj) {
+  const { text, discId } = postObj;
+  if (text.trim().length < 1) {
+    return 'Cant send empty post';
+  }
+  if (!discId) {
+    return 'Something wrong. Please reload page';
   }
   return false;
 }
