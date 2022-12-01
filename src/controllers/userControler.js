@@ -1,6 +1,7 @@
 const { uid } = require('uid');
 const { hashString, compareHash } = require('../utils/hash');
 const { insertUser, selectUser, selectUserName } = require('../model/userModel');
+const { logedUsers } = require('../utils/helper');
 
 async function saveUser(req, res) {
   const { username, password } = req.body;
@@ -40,7 +41,7 @@ async function loginUser(req, res) {
     const hashedpass = user.password;
     const result = await compareHash(password, hashedpass);
     if (!result) throw new Error('Blogi prisijungimo duomenys');
-    res.send({ error: false, secret: user.secret });
+    res.send({ error: false, secret: user.secret, userId: user.id });
   } catch (error) {
     res.status(400).json({ error: true, message: error.message });
   }

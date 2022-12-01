@@ -1,6 +1,8 @@
 const mysql = require('mysql2/promise');
 const dbConfig = require('./dbConfig');
 
+const logedUsers = [];
+
 async function testDbConnection() {
   try {
     const conn = await mysql.createConnection(dbConfig);
@@ -12,4 +14,4 @@ async function testDbConnection() {
   }
 }
 
-module.exports = testDbConnection;
+module.exports = { testDbConnection, logedUsers };

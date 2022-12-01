@@ -8,7 +8,7 @@ const colors = require('colors');
 const cors = require('cors');
 const http = require('http').createServer(app);
 const socketIo = require('socket.io');
-const testDbConnection = require('./utils/helper');
+const { testDbConnection } = require('./utils/helper');
 const restRouter = require('./routers/restRouter');
 const socketRouter = require('./routers/socketRouter');
 

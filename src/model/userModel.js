@@ -22,7 +22,7 @@ async function selectUserName(username) {
 
 async function selectUsersPosts() {
   const sql =
-    'SELECT u_id, email, bio, town, COUNT(p_id) AS posts FROM Users LEFT JOIN posts ON u_id = user_id GROUP BY u_id';
+    'SELECT Users.id AS "id", username, COUNT(posts.id) AS "posts" FROM Users LEFT JOIN posts ON (author = Users.id) GROUP BY Users.id ORDER BY COUNT(posts.id) DESC';
   // parsisiusti pilna postu info
   const [rows] = await db.query(sql);
   return rows;
@@ -35,10 +35,17 @@ async function insertUser({ username, password, secret }) {
   return rows;
 }
 
+async function updatetUserImg(userid, imgUrl) {
+  const sql = 'UPDATE Users SET image= ? WHERE id= ?';
+  const [rows] = await db.execute(sql, [imgUrl, userid]);
+  return rows;
+}
+
 module.exports = {
   selectUsers,
   selectUser,
   selectUserName,
   selectUsersPosts,
   insertUser,
+  updatetUserImg,
 };

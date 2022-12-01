@@ -2,7 +2,7 @@ const db = require('../utils/db');
 
 async function selectPosts(discid) {
   const sql =
-    'SELECT posts.id, text, username, image, replying, time FROM posts JOIN Users ON (author = Users.id) WHERE discId = ?';
+    'SELECT posts.id, text, username, image, replying, Users.id AS UserId, time FROM posts JOIN Users ON (author = Users.id) WHERE discId = ?';
   // parsisiusti pilna postu info
   const [rows] = await db.execute(sql, [discid]);
   return rows;
@@ -27,5 +27,3 @@ module.exports = {
   selectOnePost,
   addPost,
 };
-
-// SELECT DISTINCT author, COUNT(posts.id) FROM `posts` JOIN Users ON (author = Users.id) GROUP BY author

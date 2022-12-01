@@ -26,15 +26,13 @@ async function regValidator(req, res, next) {
 }
 
 // funkcija tikrina, ar duomenis siuncia registruotas vartotojas.
-// Naudojama su socket routais, todel grazina ne next(), o vartotoją arba false.
 async function userValidator(secret) {
   const [user] = await selectUser(secret);
   return user;
 }
 
 // funkcija tikrina, ar nera tusciu duomenu lauku.
-// Naudojama su socket routais, todel grazina ne next(), o tiesiog Boolean.
-async function postValidator(postObj) {
+function postValidator(postObj) {
   const { text, discId } = postObj;
   if (text.trim().length < 1) {
     return 'Cant send empty post';
@@ -45,4 +43,10 @@ async function postValidator(postObj) {
   return false;
 }
 
-module.exports = { regValidator, userValidator, postValidator };
+// tikrina ar url adrese yra img
+function isImgLink(url) {
+  if (typeof url !== 'string') return false;
+  return url.match(/^(http|https):\/\/+[\www\d]+\.[\w]+(\/[\w\d]+)?/gim) != null;
+}
+
+module.exports = { regValidator, userValidator, postValidator, isImgLink };
